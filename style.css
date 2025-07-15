@@ -72,6 +72,33 @@ header h1 {
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
+/* Memories Section Specific Styles */
+#memories .gallery {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    align-items: center; /* Dikeyde ortala */
+}
+
+#memories .photo-placeholder {
+    width: 100%;
+    max-width: 300px; /* Masaüstü için maksimum genişlik */
+    height: 200px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#memories .photo-placeholder:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+#memories .photo-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .gallery {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -304,13 +331,45 @@ header h1 {
 }
 
 /* Mobile Responsive Styles */
+@media (max-width: 960px) {
+    .container {
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    #puzzle-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    #puzzle-board,
+    #puzzle-pieces-container,
+    #pieces-viewport {
+        width: 90vw; /* Genişliği ekran genişliğine göre ayarla */
+        height: 90vw; /* Yüksekliği genişlikle aynı yap */
+        max-width: 400px; /* Maksimum boyutu koru */
+        max-height: 400px;
+    }
+
+    #puzzle-pieces {
+        width: 100%;
+        height: 100%;
+    }
+
+    .puzzle-piece,
+    .puzzle-slot {
+        /* Boyutlar JS tarafından ayarlanacak */
+    }
+}
+
 @media (max-width: 768px) {
     header h1 {
         font-size: 2.2em;
     }
 
     .gallery {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Daha küçük resimler için min boyutu azalt */
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
         gap: 10px;
     }
 
@@ -339,28 +398,6 @@ header h1 {
         height: 100%;
     }
 
-    #puzzle-container {
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-    }
-
-    #puzzle-board, #pieces-viewport, #puzzle-pieces {
-        width: 300px;
-        height: 300px;
-    }
-
-    .puzzle-piece {
-        width: 75px;
-        height: 75px;
-        background-size: 300px 300px;
-    }
-    
-    .puzzle-slot {
-        width: 75px;
-        height: 75px;
-    }
-
     #win-message {
         font-size: 3em;
     }
@@ -380,7 +417,7 @@ header h1 {
         padding: 10px;
     }
 
-    #reveal-button {
+    #reveal-button, #password-button {
         padding: 12px 25px;
         font-size: 1em;
     }
@@ -405,6 +442,14 @@ header h1 {
 
     #win-message {
         font-size: 2.5em;
+    }
+
+    #password-message-section h2 {
+        font-size: 1.6em;
+    }
+
+    #password-message-section .secret-box {
+        padding: 25px;
     }
 }
 
@@ -431,6 +476,114 @@ header h1 {
 
 #reveal-button:hover {
     background-color: #ad1457; /* Biraz daha koyu pembe */
+}
+
+/* Şifreli Buton Animasyonları */
+#password-button {
+    background-color: #c2185b;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    animation: pulse-animation 2s infinite;
+}
+
+#password-button:hover {
+    background-color: #ad1457;
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #ff80ab;
+}
+
+@keyframes pulse-animation {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 5px rgba(194, 24, 91, 0.7);
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 0 20px rgba(194, 24, 91, 1);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 5px rgba(194, 24, 91, 0.7);
+    }
+}
+
+/* Şifreli Mesaj Animasyonu */
+#password-message.visible {
+    animation: fadeInUp-animation 1s ease-out forwards;
+}
+
+@keyframes fadeInUp-animation {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Şifreli Mesaj Bölümü Stilleri */
+#password-message-section {
+    padding: 30px 0;
+}
+
+#password-message-section .secret-box {
+    background: linear-gradient(135deg, #fdecf2 0%, #f8bbd0 100%);
+    border-radius: 20px;
+    border: 1px solid #f48fb1;
+    padding: 40px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 0 20px rgba(194, 24, 91, 0.3);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    animation: section-glow 4s infinite alternate;
+    position: relative;
+    overflow: hidden; /* For pseudo-elements */
+}
+
+#password-message-section .secret-box::before {
+    content: '♥';
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-size: 30px;
+    color: rgba(255, 255, 255, 0.5);
+    transform: rotate(-15deg);
+}
+
+#password-message-section .secret-box::after {
+    content: '♥';
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    font-size: 30px;
+    color: rgba(255, 255, 255, 0.5);
+    transform: rotate(15deg);
+}
+
+@keyframes section-glow {
+    from {
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1), 0 0 20px rgba(194, 24, 91, 0.2);
+    }
+    to {
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15), 0 0 35px rgba(194, 24, 91, 0.4);
+    }
+}
+
+#password-message-section .secret-box:hover {
+    transform: translateY(-5px) scale(1.02);
+}
+
+#password-message-section h2 {
+    color: #a0104c;
+    font-weight: 600;
+    text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
+    margin-bottom: 25px;
+    font-size: 2em;
 }
 
 .hidden {
