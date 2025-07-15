@@ -13,6 +13,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Password protected message
+    const passwordButton = document.getElementById('password-button');
+    const passwordMessage = document.getElementById('password-message');
+
+    passwordButton.addEventListener('click', () => {
+                const password = prompt('Lütfen şifreyi girin (Kfc, resmiyet tarih):');
+        if (password === '10.01.2024') {
+            passwordMessage.classList.remove('hidden');
+            passwordMessage.classList.add('visible'); // Animasyon için sınıf ekle
+            passwordButton.style.display = 'none';
+        } else {
+            alert('Yanlış şifre! Nazlı değilsen boşa uğraşma.');
+        }
+    });
+
     // Heart animation
     function createHeart() {
         const heart = document.createElement('div');
@@ -45,13 +60,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const puzzlePiecesContainer = document.getElementById('puzzle-pieces');
     const puzzleBoardContainer = document.getElementById('puzzle-board');
     const winOverlay = document.getElementById('win-overlay');
-    let selectedPiece = null; // Tıklanan parçayı tutmak için
+    let selectedPiece = null;
 
     function initializePuzzle() {
         puzzleBoardContainer.innerHTML = '';
         puzzlePiecesContainer.innerHTML = '';
 
-        const pieceCount = 16; // 4x4 grid
+        const puzzleSize = puzzleBoardContainer.clientWidth;
+        const pieceCount = 16;
+        const gridSize = 4;
+        const pieceSize = puzzleSize / gridSize;
+
+        puzzleBoardContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+        puzzlePiecesContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+
         const pieceNumbers = [...Array(pieceCount).keys()];
         const shuffledPieces = pieceNumbers.sort(() => Math.random() - 0.5);
 
@@ -59,10 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const piece = document.createElement('div');
             piece.classList.add('puzzle-piece');
             piece.dataset.id = i;
-            const row = Math.floor(i / 4);
-            const col = i % 4;
-            piece.style.backgroundPosition = `-${col * 100}px -${row * 100}px`;
-            piece.addEventListener('click', handlePieceClick); // Tıklama dinleyicisi ekle
+            piece.style.width = `${pieceSize}px`;
+            piece.style.height = `${pieceSize}px`;
+            piece.style.backgroundSize = `${puzzleSize}px ${puzzleSize}px`;
+            const row = Math.floor(i / gridSize);
+            const col = i % gridSize;
+            piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
+            piece.addEventListener('click', handlePieceClick);
             puzzlePiecesContainer.appendChild(piece);
         });
 
@@ -70,50 +95,38 @@ document.addEventListener('DOMContentLoaded', () => {
             const slot = document.createElement('div');
             slot.classList.add('puzzle-slot');
             slot.dataset.id = i;
-            slot.addEventListener('click', handleSlotClick); // Tıklama dinleyicisi ekle
+            slot.addEventListener('click', handleSlotClick);
             puzzleBoardContainer.appendChild(slot);
         }
     }
 
     function handlePieceClick(e) {
         const clickedPiece = e.target;
-
         if (selectedPiece) {
-            // Zaten bir parça seçiliyse, seçimi kaldır
             selectedPiece.classList.remove('selected');
         }
-
         if (selectedPiece === clickedPiece) {
-            // Aynı parçaya tekrar tıklanırsa seçimi kaldır
             selectedPiece = null;
         } else {
-            // Yeni parçayı seç
             selectedPiece = clickedPiece;
             selectedPiece.classList.add('selected');
         }
     }
 
     function handleSlotClick(e) {
-        const clickedSlot = e.target;
+        const clickedSlot = e.target.closest('.puzzle-slot');
+        if (!clickedSlot) return;
 
         if (selectedPiece && !clickedSlot.firstChild) {
-            // Seçili bir parça varsa ve yuva boşsa, parçayı yuvaya taşı
             clickedSlot.appendChild(selectedPiece);
             selectedPiece.classList.remove('selected');
             selectedPiece = null;
             checkWin();
-        } else if (clickedSlot.firstChild && selectedPiece === clickedSlot.firstChild) {
-            // Eğer tıklanan yuva doluysa ve seçili parça o yuvadaki parçaysa, seçimi kaldır
-            selectedPiece.classList.remove('selected');
-            selectedPiece = null;
-        } else if (clickedSlot.firstChild && selectedPiece) {
-            // Eğer tıklanan yuva doluysa ve seçili parça farklı bir parçaysa, yer değiştir
+        } else if (selectedPiece && clickedSlot.firstChild) {
             const pieceInSlot = clickedSlot.firstChild;
-            const originalParent = selectedPiece.parentNode;
-
-            originalParent.appendChild(pieceInSlot);
+            const containerOfSelected = selectedPiece.parentNode;
+            containerOfSelected.appendChild(pieceInSlot);
             clickedSlot.appendChild(selectedPiece);
-
             selectedPiece.classList.remove('selected');
             selectedPiece = null;
             checkWin();
@@ -141,6 +154,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initializePuzzle();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (winOverlay.classList.contains('show')) return;
+            initializePuzzle();
+        }, 250);
+    });
 
     // Lightbox Gallery
     const galleryImages = document.querySelectorAll('.gallery-image');
