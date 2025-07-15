@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İyi ki Doğdun!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>İyi ki Doğdun Benim Sevgilim!</h1>
+        </header>
+        <main>
+            <section id="memories">
+                <h2>Anılarımız</h2>
+                <div class="gallery">
+                    <div class="photo-placeholder" style="width: 300px; height: 200px; overflow: hidden;">
+                        <img src="anilar/resim1.jpg" style="width: 100%; height: auto;"> 
+                    </div>
+                    <div class="photo-placeholder" style="width: 300px; height: 200px; overflow: hidden;">
+                        <img src="anilar/resim2.png" style="width: 100%; height: auto;">
+                    </div>
+                    <div class="photo-placeholder" style="width: 300px; height: 200px; overflow: hidden;">
+                        <img src="anilar/resim3.jpg" style="width: 100%; height: auto;">
+                    </div>
+                </div>
+            </section>
+            <section id="message">
+                <br><br>
+                <h2>Sürpriz Butonu</h2>
+                <div class="secret-box">
+                    <button id="reveal-button">Sürprizi Görmek İçin Tıkla!</button>
+                    <p id="secret-message" class="hidden">Doğum günün kutlu olsun sevgilim!!!</p>
+                </div>
+            </section>
+
+            <section id="puzzle-game">
+                <h2>Sürpriz Puzzle!</h2>
+                <p>Resmi tamamla ve sürprizi gör!</p>
+                <div id="puzzle-container">
+                    <div id="puzzle-pieces-container">
+                        <button id="prev-page" class="page-nav">&lt;</button>
+                        <div id="pieces-viewport">
+                            <div id="puzzle-pieces"></div>
+                        </div>
+                        <button id="next-page" class="page-nav">&gt;</button>
+                    </div>
+                    <div id="puzzle-board"></div>
+                </div>
+            </section>
+
+            <section id="advanced-gallery">
+                <h2>Anı Kartları</h2>
+                <div class="gallery">
+                    <div class="photo-placeholder">
+                        <img src="anilar/resim3.jpg" alt="Anı 1" class="gallery-image">
+                    </div>
+                    <div class="photo-placeholder">
+                        <img src="anilar/resim4.jpg" alt="Anı 2" class="gallery-image">
+                    </div>
+                    <div class="photo-placeholder">
+                        <img src="anilar/resim5.jpg" alt="Anı 3" class="gallery-image">
+                    </div>
+                    <div class="photo-placeholder">
+                        <img src="anilar/resim6.jpg" alt="Anı 4" class="gallery-image">
+                    </div>
+                    <div class="photo-placeholder">
+                        <img src="anilar/resim7.jpg" alt="Anı 5" class="gallery-image">
+                    </div>
+                    <div class="photo-placeholder">
+                        <img src="anilar/resim8.jpg" alt="Anı 6" class="gallery-image">
+                    </div>
+                    <div class="photo-placeholder">
+                        <img src="anilar/resim9.jpg" alt="Anı 7" class="gallery-image">
+                    </div>
+                    <div class="photo-placeholder">
+                        <img src="anilar/resim10.jpg" alt="Anı 8" class="gallery-image">
+                    </div>
+                </div>
+            </section>
+
+            <section id="carousel-section">
+                <h2>Bizim Anlarımız</h2>
+                <div class="carousel-container">
+                    <div class="carousel-slide">
+                        <img src="anilar/resim11.jpg" alt="Carousel Ani 1">
+                        <img src="anilar/resim12.jpg" alt="Carousel Ani 2">
+                        <img src="anilar/resim13.jpg" alt="Carousel Ani 3">
+                        <img src="anilar/resim14.jpg" alt="Carousel Ani 4">
+                    </div>
+                    <button class="carousel-button prev">&#10094;</button>
+                    <button class="carousel-button next">&#10095;</button>
+                    <div class="carousel-dots"></div>
+                </div>
+            </section>
+        </main>
+
+        <div id="win-overlay" class="hidden">
+            <div id="win-message">Seni Seviyorum!</div>
+        </div>
+    </div>
+
+    <div id="lightbox-overlay" class="hidden">
+        <span class="close-button">&times;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-image" src="" alt="Büyük Resim">
+        </div>
+        <a class="prev-button">&#10094;</a>
+        <a class="next-button">&#10095;</a>
+    </div>
+
+    <div id="kartyeri"><img id="kart" src="anilar/kart.png"></div>
+    <audio id="romantic-music" src="anilar/romanticMusic.mp3" preload="auto"></audio>
+    <script src="script.js"></script>
+</body>
+</html>
